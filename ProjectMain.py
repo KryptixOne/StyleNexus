@@ -3,8 +3,8 @@ Project Should do the following:
 
 1. Take the following as inputs from the User: [ ]
     a. sequence of Reference Images [ ]
-    b. Desired Prompt [ ]
-    c. Desired Negative Prompt. Or This can be predetermined by us. [ ]
+    b. Desired Prompt [X]
+    c. Desired Negative Prompt. Or This can be predetermined by us. [X]
 
 2. Identify area of interest based on reference images. [ ]
     --> Create masks with segmentation net. [ ]
@@ -34,7 +34,8 @@ from diffusers import AutoencoderKL, UNet2DConditionModel, PNDMScheduler
 from tqdm.auto import tqdm
 from diffusers import StableDiffusionPipeline, DDIMScheduler
 
-def build_SD_pipeline(checkpoint_path:str, device:str = 'cuda' ,**kwargs):
+
+def build_SD_pipeline(checkpoint_path: str, device: str = 'cuda', **kwargs):
     """
     :param checkpoint_path: Checkpoint path to Diffusers Type Folder Containing the VAE, UNET, Scheduler, text_encoder
     tokenizer
@@ -49,11 +50,40 @@ def build_SD_pipeline(checkpoint_path:str, device:str = 'cuda' ,**kwargs):
     # Enables DDIM scheduler for Stable Diffusion Models
     if kwargs.get('scheduler') == 'DDIM':
         # This Scheduler may need to be tuned
-        pipe.scheduler = DDIMScheduler(beta_start=0.00085, beta_end=0.012, beta_schedule="scaled_linear", steps_offset=1, clip_sample=False)
+        pipe.scheduler = DDIMScheduler(beta_start=0.00085, beta_end=0.012,
+                                       beta_schedule="scaled_linear", steps_offset=1, clip_sample=False)
 
     return pipe
 
-def make_img_prediction(pipeline, prompt:str, negative_prompt:str, *kwargs):
+
+def create_latents_from_seeds(pipeline, seeds, height, width, device):
+    """
+    Build latents from seeds for reusing seeds
+    :param pipeline: Pipeline for model
+    :param seeds: seed
+    :param height: output Image Height
+    :param width: output Image Width
+    :param device: Torch device
+    :return: seed controlled latent
+    """
+    generator = torch.Generator(device=device)
+    latents = None
+    # Get a new random seed, store it and use it as the generator state
+    seed = generator.seed()
+    seeds.append(seed)
+    generator = generator.manual_seed(seed)
+
+    image_latents = torch.randn(
+        (1, pipeline.unet.in_channels, height // 8, width // 8),
+        generator=generator,
+        device=device
+    )
+    latents = image_latents if latents is None else torch.cat((latents, image_latents))
+
+    return latents
+
+
+def make_img_prediction(pipeline, prompt: str, negative_prompt: str, *kwargs):
     """
     :param pipeline: The Diffusion pipeline used to generate Images
     :param prompt: The text prompt
@@ -61,10 +91,12 @@ def make_img_prediction(pipeline, prompt:str, negative_prompt:str, *kwargs):
     :param kwargs: relevant arguments for the pipeline
     :return: Generated Images
     """
+    latents = None
     if kwargs.get('device'):
         device = kwargs['device']
     else:
         device = 'cpu'
+
 
     # Manual Embedding of prompt. This is to counter the 77 Token limit imposed by CLIP
     max_length = pipeline.tokenizer.model_max_length
@@ -73,8 +105,7 @@ def make_img_prediction(pipeline, prompt:str, negative_prompt:str, *kwargs):
     input_ids = input_ids.to(device)
 
     negative_ids = pipeline.tokenizer(negative_prompt, truncation=False, padding="max_length",
-                                  max_length=input_ids.shape[-1], return_tensors="pt").input_ids
-
+                                      max_length=input_ids.shape[-1], return_tensors="pt").input_ids
     negative_ids = negative_ids.to(device)
 
     concat_embeds = []
@@ -86,8 +117,36 @@ def make_img_prediction(pipeline, prompt:str, negative_prompt:str, *kwargs):
     prompt_embeds = torch.cat(concat_embeds, dim=1)
     negative_prompt_embeds = torch.cat(neg_embeds, dim=1)
 
-    image = pipeline(prompt_embeds=prompt_embeds, negative_prompt_embeds=negative_prompt_embeds).images[0]
+    # If generating from Seeds
+    if kwargs['seeds']:
+        latents = create_latents_from_seeds(pipeline=pipeline,
+                                            seeds=kwargs['seeds'],
+                                            height=kwargs['height'],
+                                            width=kwargs['width'],
+                                            device=kwargs['device'])
+
+        image = pipeline(prompt_embeds=prompt_embeds, negative_prompt_embeds=negative_prompt_embeds,
+                         guidance_scale=kwargs['CFG'], latents=latents).images[0]
+    else:
+        image = pipeline(prompt_embeds=prompt_embeds, negative_prompt_embeds=negative_prompt_embeds,
+                         guidance_scale=kwargs['CFG']).images[0]
 
     return image
 
+
+def main():
+    # inputs
+    seeds = []
+    scheduler = 'DDIM'
+    checkpoint_directory = r'D:\Ecommerce_FakeModel\Models_Converted\Lyriel_Diffusers'
+    device = 'cuda'
+    prompt = ''
+    negative_prompt = ''
+    CFG = 7
+    height = 512
+    width = 512
+
+    pipeline = build_SD_pipeline(checkpoint_directory, device, scheduler=scheduler)
+    image_out = make_img_prediction(pipeline, prompt, negative_prompt, device=device, seeds=seeds, height=height,
+                                    width=width, CFG=CFG)
 
