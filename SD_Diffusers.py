@@ -5,7 +5,8 @@ from transformers import CLIPTextModel, CLIPTokenizer
 from diffusers import AutoencoderKL, UNet2DConditionModel, PNDMScheduler
 
 from tqdm.auto import tqdm
-
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
 """
 civitaiModel = r'D:\StableDiffusionWebUI\stable-diffusion-webui\models\Stable-diffusion\lyriel_v16.safetensors'
 convertedModel = r'D:\Ecommerce_FakeModel\Models_Converted\Lyriel_Diffusers' #diffusion_pytorch_model
@@ -31,7 +32,7 @@ pipe = StableDiffusionPipeline.from_pretrained(convertedModel,torch_dtype=torch.
 pipe = pipe.to("cuda")
 
 # how to manage CLIP 77 Token Limit *************************************
-prompt = '25 * "a photo of an astronaut riding a horse on mars"' # a ridiculously large  prompt
+prompt = 25 * "a photo of an astronaut riding a horse on mars" # a ridiculously large  prompt
 negative_prompt = 'THINGS WE DONT WANT'
 max_length = pipe.tokenizer.model_max_length
 
