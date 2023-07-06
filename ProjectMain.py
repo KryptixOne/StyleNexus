@@ -26,14 +26,10 @@ Project Should do the following:
 5. Build a WebUI that Allows for independent user usage [ ]
 """
 from matplotlib import pyplot as plt
-from PIL import Image
 import torch
-from transformers import CLIPTextModel, CLIPTokenizer
-from diffusers import AutoencoderKL, UNet2DConditionModel, PNDMScheduler
-
-from tqdm.auto import tqdm
 from diffusers import StableDiffusionPipeline, DDIMScheduler
-
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 def build_SD_pipeline(checkpoint_path: str, device: str = 'cuda', **kwargs):
     """
@@ -69,9 +65,9 @@ def create_latents_from_seeds(pipeline, seeds, height, width, device):
     generator = torch.Generator(device=device)
     latents = None
     # Get a new random seed, store it and use it as the generator state
-    seed = generator.seed()
-    seeds.append(seed)
-    generator = generator.manual_seed(seed)
+    #seed = generator.seed()
+    #seeds.append(seed)
+    generator = generator.manual_seed(seeds)
 
     image_latents = torch.randn(
         (1, pipeline.unet.in_channels, height // 8, width // 8),
@@ -83,7 +79,7 @@ def create_latents_from_seeds(pipeline, seeds, height, width, device):
     return latents
 
 
-def make_img_prediction(pipeline, prompt: str, negative_prompt: str, *kwargs):
+def make_img_prediction(pipeline, prompt: str, negative_prompt: str, **kwargs):
     """
     :param pipeline: The Diffusion pipeline used to generate Images
     :param prompt: The text prompt
@@ -101,7 +97,8 @@ def make_img_prediction(pipeline, prompt: str, negative_prompt: str, *kwargs):
     # Manual Embedding of prompt. This is to counter the 77 Token limit imposed by CLIP
     max_length = pipeline.tokenizer.model_max_length
 
-    input_ids = pipeline.tokenizer(prompt, return_tensors="pt").input_ids
+    input_ids = pipeline.tokenizer(prompt, truncation=False, padding="max_length",
+                                   return_tensors="pt").input_ids
     input_ids = input_ids.to(device)
 
     negative_ids = pipeline.tokenizer(negative_prompt, truncation=False, padding="max_length",
@@ -124,6 +121,7 @@ def make_img_prediction(pipeline, prompt: str, negative_prompt: str, *kwargs):
                                             height=kwargs['height'],
                                             width=kwargs['width'],
                                             device=kwargs['device'])
+        latents = latents.type(torch.float16)
 
         image = pipeline(prompt_embeds=prompt_embeds, negative_prompt_embeds=negative_prompt_embeds,
                          guidance_scale=kwargs['CFG'], latents=latents).images[0]
@@ -136,12 +134,15 @@ def make_img_prediction(pipeline, prompt: str, negative_prompt: str, *kwargs):
 
 def main():
     # inputs
-    seeds = []
+    seeds = None
     scheduler = 'DDIM'
     checkpoint_directory = r'D:\Ecommerce_FakeModel\Models_Converted\Lyriel_Diffusers'
     device = 'cuda'
-    prompt = ''
-    negative_prompt = ''
+    prompt = 'A cute puppy'
+    negative_prompt = 'lowres, bad anatomy, bad hands, text, error, ' \
+                      'missing fingers, extra digit, fewer digits, cropped,' \
+                      ' worst quality, low quality, normal quality, jpeg artifacts,' \
+                      ' signature, watermark, username, blurry, artist name, young, loli'
     CFG = 7
     height = 512
     width = 512
@@ -149,4 +150,8 @@ def main():
     pipeline = build_SD_pipeline(checkpoint_directory, device, scheduler=scheduler)
     image_out = make_img_prediction(pipeline, prompt, negative_prompt, device=device, seeds=seeds, height=height,
                                     width=width, CFG=CFG)
+    plt.imshow(image_out)
+    plt.show()
 
+if __name__ == '__main__':
+    main()

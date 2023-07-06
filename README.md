@@ -1,6 +1,6 @@
 # ECommerce_Model
 
-"""
+
 Project Should do the following:
 
 ## 1. Take the following as inputs from the User: [ ]
@@ -40,4 +40,3 @@ Project Should do the following:
     --> Return X number of Generated Images [ ]
 
 5. Build a WebUI that Allows for independent user usage [ ]
-"""
