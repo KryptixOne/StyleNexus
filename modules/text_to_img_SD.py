@@ -3,8 +3,10 @@ For Text_To_Img Diffusion
 """
 import torch
 import warnings
-from Utils.Create_Embeddings import build_text_embeddings
-warnings.simplefilter(action='ignore', category=FutureWarning)
+from utils.create_embeddings import build_text_embeddings
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
+
 
 def create_latents_from_seeds(pipeline, seeds, height, width, device):
     """
@@ -26,7 +28,7 @@ def create_latents_from_seeds(pipeline, seeds, height, width, device):
     image_latents = torch.randn(
         (1, pipeline.unet.in_channels, height // 8, width // 8),
         generator=generator,
-        device=device
+        device=device,
     )
     latents = image_latents if latents is None else torch.cat((latents, image_latents))
 
@@ -41,29 +43,42 @@ def make_txt_2_img_prediction(pipeline, prompt: str, negative_prompt: str, **kwa
     :param kwargs: relevant arguments for the pipeline
     :return: Generated Images
     """
-    if kwargs.get('device'):
-        device = kwargs['device']
+    if kwargs.get("device"):
+        device = kwargs["device"]
     else:
-        device = 'cpu'
+        device = "cpu"
 
     # Manual Embedding of prompt. This is to counter the 77 Token limit imposed by CLIP
-    prompt_embeds, negative_prompt_embeds = build_text_embeddings(pipeline, prompt, negative_prompt, device)
+    prompt_embeds, negative_prompt_embeds = build_text_embeddings(
+        pipeline, prompt, negative_prompt, device
+    )
 
     # If generating from Seeds
-    if kwargs['seeds']:
-        latents = create_latents_from_seeds(pipeline=pipeline,
-                                            seeds=kwargs['seeds'],
-                                            height=kwargs['height'],
-                                            width=kwargs['width'],
-                                            device=kwargs['device'])
+    if kwargs["seeds"]:
+        latents = create_latents_from_seeds(
+            pipeline=pipeline,
+            seeds=kwargs["seeds"],
+            height=kwargs["height"],
+            width=kwargs["width"],
+            device=kwargs["device"],
+        )
         latents = latents.type(torch.float16)
 
-        image = pipeline(prompt_embeds=prompt_embeds, negative_prompt_embeds=negative_prompt_embeds,
-                         guidance_scale=kwargs['CFG'], latents=latents,
-                         num_inference_steps=kwargs['num_inference_steps']).images[0]
+        image = pipeline(
+            prompt_embeds=prompt_embeds,
+            negative_prompt_embeds=negative_prompt_embeds,
+            guidance_scale=kwargs["CFG"],
+            latents=latents,
+            num_inference_steps=kwargs["num_inference_steps"],
+        ).images[0]
     else:
-        image = pipeline(prompt_embeds=prompt_embeds, negative_prompt_embeds=negative_prompt_embeds,
-                         guidance_scale=kwargs['CFG'], height=kwargs['height'], width=kwargs['width'],
-                         num_inference_steps=kwargs['num_inference_steps']).images[0]
+        image = pipeline(
+            prompt_embeds=prompt_embeds,
+            negative_prompt_embeds=negative_prompt_embeds,
+            guidance_scale=kwargs["CFG"],
+            height=kwargs["height"],
+            width=kwargs["width"],
+            num_inference_steps=kwargs["num_inference_steps"],
+        ).images[0]
 
     return image
