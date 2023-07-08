@@ -1,8 +1,6 @@
 from PIL import Image
-import torch
-from diffusers import StableDiffusionInpaintPipeline, DDIMScheduler
-
 import warnings
+from Utils.Create_Embeddings import build_text_embeddings
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
@@ -48,24 +46,7 @@ def make_Inpainting_prediction(pipeline, prompt: str, negative_prompt: str, **kw
         device = 'cpu'
 
     # Manual Embedding of prompt. This is to counter the 77 Token limit imposed by CLIP
-    max_length = pipeline.tokenizer.model_max_length
-
-    input_ids = pipeline.tokenizer(prompt, truncation=False, padding="max_length",
-                                   return_tensors="pt").input_ids
-    input_ids = input_ids.to(device)
-
-    negative_ids = pipeline.tokenizer(negative_prompt, truncation=False, padding="max_length",
-                                      max_length=input_ids.shape[-1], return_tensors="pt").input_ids
-    negative_ids = negative_ids.to(device)
-
-    concat_embeds = []
-    neg_embeds = []
-    for i in range(0, input_ids.shape[-1], max_length):
-        concat_embeds.append(pipeline.text_encoder(input_ids[:, i: i + max_length])[0])
-        neg_embeds.append(pipeline.text_encoder(negative_ids[:, i: i + max_length])[0])
-
-    prompt_embeds = torch.cat(concat_embeds, dim=1)
-    negative_prompt_embeds = torch.cat(neg_embeds, dim=1)
+    prompt_embeds, negative_prompt_embeds = build_text_embeddings(pipeline, prompt, negative_prompt, device)
 
     image = pipeline(prompt_embeds=prompt_embeds, negative_prompt_embeds=negative_prompt_embeds, image=init_img,mask_image=mask_img,
                      guidance_scale=kwargs['CFG'], num_inference_steps=kwargs['num_inference_steps'],
