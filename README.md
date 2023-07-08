@@ -6,12 +6,22 @@ Project Should do the following:
 ## 1. Take the following as inputs from the User: [ ]
 
     a. sequence of Reference Images [ ]
+        --> Function for Acquisition and Transformation developed [X]
+        --> Integrate into SD/Dreambooth pipeline [ ] 
 
     b. Desired Prompt [X]
+        --> Integrated into SD Pipeline [X]
 
     c. Desired Negative Prompt. Or This can be predetermined by us. [X]
+        --> Integrated into SD Pipeline [X]
 
-## 2. Identify area of interest based on reference images. [ ]
+## 2. Build In-Painting Img2Img and DreamBooth Pipeline For SD [ ]
+        --> Img2Img Integration [ ]
+        --> DreamBooth Integration [ ]
+        --> In-Painting Integration (Don't worry about mask creation yet) [ ]
+
+
+## 3. Identify area of interest based on reference images. [ ]
 
     --> Create masks with segmentation net. [ ]
 
@@ -21,7 +31,7 @@ Project Should do the following:
 
     --> If using DreamBooth-like methodology, Not required
 
-## 3. Incorporate Visual Similarity Metric.  [ ]
+## 4. Incorporate Visual Similarity Metric.  [ ]
 
     --> Metric will rate how "similar" the generated object is to reference.  [ ]
 
@@ -31,7 +41,7 @@ Project Should do the following:
 
     the Metric but visual distortions to the reference should [ ]
 
-## 4. Incorporate Image Filtering Based on Similarity Metric [ ]
+## 5. Incorporate Image Filtering Based on Similarity Metric [ ]
 
     --> Remove Images that don't achieve a certain threshold. [ ]
 
