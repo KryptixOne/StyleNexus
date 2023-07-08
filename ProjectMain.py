@@ -1,6 +1,7 @@
 from matplotlib import pyplot as plt
-from Modules.Text_To_Img_SD import build_txt_2_img_SD_pipeline, make_txt_2_img_prediction
-from Modules.Img_2_Img_SD import build_Img2Img_SD_pipeline, make_img_2_img_prediction
+from Modules.Text_To_Img_SD import make_txt_2_img_prediction
+from Modules.Img_2_Img_SD import make_img_2_img_prediction
+from Utils.PipelineLoader import build_SD_pipeline_based_on_input
 
 
 def main():
@@ -31,19 +32,19 @@ def main():
     """
 
     # For text to img
-    pipeline = build_txt_2_img_SD_pipeline(checkpoint_directory, device, scheduler=scheduler)
+    pipeline = build_SD_pipeline_based_on_input(checkpoint_directory, device, pipeline_type='Text2Img',
+                                                scheduler=scheduler)
     image_out = make_txt_2_img_prediction(pipeline, prompt, negative_prompt, device=device, seeds=seeds, height=height,
-                                          width=width, CFG=CFG, num_inference_steps=num_inference_steps,
-                                          img2img_strength=img2img_strength,reference_img_path =reference_image_path)
-
-
-    # For Image to Image
-    pipeline = build_Img2Img_SD_pipeline(checkpoint_directory, device, scheduler=scheduler)
-    image_out = make_img_2_img_prediction(pipeline, prompt, negative_prompt, device=device, seeds=seeds, height=height,
                                           width=width, CFG=CFG, num_inference_steps=num_inference_steps,
                                           img2img_strength=img2img_strength, reference_img_path=reference_image_path)
 
+    # For Image to Image
+    pipeline = build_SD_pipeline_based_on_input(checkpoint_directory, device, pipeline_type='Img2Img',
+                                                scheduler=scheduler)
 
+    image_out = make_img_2_img_prediction(pipeline, prompt, negative_prompt, device=device, seeds=seeds, height=height,
+                                          width=width, CFG=CFG, num_inference_steps=num_inference_steps,
+                                          img2img_strength=img2img_strength, reference_img_path=reference_image_path)
 
     plt.imshow(image_out)
     plt.show()

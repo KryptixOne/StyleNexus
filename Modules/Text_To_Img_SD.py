@@ -8,28 +8,6 @@ import warnings
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
-
-def build_txt_2_img_SD_pipeline(checkpoint_path: str, device: str = 'cuda', **kwargs):
-    """
-    :param checkpoint_path: Checkpoint path to Diffusers Type Folder Containing the VAE, UNET, Scheduler, text_encoder
-    tokenizer
-    :param device: string name of the device used for DL and inference. Default is 'cuda'
-    :return: Pipeline for Stable Diffusion given a model
-    """
-
-    assert checkpoint_path, 'Checkpoint_path is empty'
-    pipe = StableDiffusionPipeline.from_pretrained(checkpoint_path, torch_dtype=torch.float16)
-    pipe = pipe.to(device)
-
-    # Enables DDIM scheduler for Stable Diffusion Models
-    if kwargs.get('scheduler') == 'DDIM':
-        # This Scheduler may need to be tuned
-        pipe.scheduler = DDIMScheduler(beta_start=0.00085, beta_end=0.012,
-                                       beta_schedule="scaled_linear", steps_offset=1, clip_sample=False)
-
-    return pipe
-
-
 def create_latents_from_seeds(pipeline, seeds, height, width, device):
     """
     Build latents from seeds for reusing seeds

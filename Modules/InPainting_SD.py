@@ -1,6 +1,6 @@
 from PIL import Image
 import torch
-from diffusers import StableDiffusionImg2ImgPipeline, DDIMScheduler
+from diffusers import StableDiffusionInpaintPipeline, DDIMScheduler
 
 import warnings
 
@@ -20,7 +20,7 @@ def resize_png_image(image_path, new_width, new_height):
     return resized_image
 
 
-def make_img_2_img_prediction(pipeline, prompt: str, negative_prompt: str, **kwargs):
+def make_Inpainting_prediction(pipeline, prompt: str, negative_prompt: str, **kwargs):
     """
     :param pipeline: The Diffusion pipeline used to generate Images
     :param prompt: The text prompt
@@ -29,11 +29,18 @@ def make_img_2_img_prediction(pipeline, prompt: str, negative_prompt: str, **kwa
     :return: Generated Images
     """
 
-    assert kwargs.get('reference_img_path'), print('No reference Image path')
+    assert kwargs.get('init_img'), print('No initial Image path')
+    assert kwargs.get('mask_img'), print('No mask Image path')
     assert kwargs.get('height'), print('No height specified')
     assert kwargs.get('width'), print('No width specified')
 
-    reference_img = resize_png_image(kwargs['reference_img_path'], kwargs['width'], kwargs['height'])
+    # make both init and mask image equal size
+    init_img = resize_png_image(kwargs['init_img'], kwargs['width'], kwargs['height'])
+    mask_img = resize_png_image(kwargs['mask_img'], kwargs['width'], kwargs['height'])
+
+    # Create assert statement on image size (B, H, W, 1).
+    # For mask
+
 
     if kwargs.get('device'):
         device = kwargs['device']
@@ -60,7 +67,7 @@ def make_img_2_img_prediction(pipeline, prompt: str, negative_prompt: str, **kwa
     prompt_embeds = torch.cat(concat_embeds, dim=1)
     negative_prompt_embeds = torch.cat(neg_embeds, dim=1)
 
-    image = pipeline(prompt_embeds=prompt_embeds, negative_prompt_embeds=negative_prompt_embeds, image=reference_img,
+    image = pipeline(prompt_embeds=prompt_embeds, negative_prompt_embeds=negative_prompt_embeds, image=init_img,mask_image=mask_img,
                      guidance_scale=kwargs['CFG'], num_inference_steps=kwargs['num_inference_steps'],
                      strength=kwargs['img2img_strength']).images[0]
 
