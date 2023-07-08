@@ -18,7 +18,7 @@ def acquire_image_paths():
 
     return list(file_paths)
 
-def load_images_as_tensors(file_paths):
+def load_images_as_tensors(file_paths:list):
     """
     loads, scales to 1024x1024 and transforms input images to torch tensors
     :param file_paths: Image file Paths
