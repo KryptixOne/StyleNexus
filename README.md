@@ -16,7 +16,7 @@ Project Should do the following:
         --> Integrated into SD Pipeline [X]
 
 ## 2. Build In-Painting Img2Img and DreamBooth Pipeline For SD [ ]
-        --> Img2Img Integration [ ]
+        --> Img2Img Integration [X]
         --> DreamBooth Integration [ ]
         --> In-Painting Integration (Don't worry about mask creation yet) [ ]
 

@@ -5,9 +5,11 @@ from matplotlib import pyplot as plt
 import torch
 from diffusers import StableDiffusionPipeline, DDIMScheduler
 import warnings
+
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
-def build_SD_pipeline(checkpoint_path: str, device: str = 'cuda', **kwargs):
+
+def build_txt_2_img_SD_pipeline(checkpoint_path: str, device: str = 'cuda', **kwargs):
     """
     :param checkpoint_path: Checkpoint path to Diffusers Type Folder Containing the VAE, UNET, Scheduler, text_encoder
     tokenizer
@@ -41,8 +43,8 @@ def create_latents_from_seeds(pipeline, seeds, height, width, device):
     generator = torch.Generator(device=device)
     latents = None
     # Get a new random seed, store it and use it as the generator state
-    #seed = generator.seed()
-    #seeds.append(seed)
+    # seed = generator.seed()
+    # seeds.append(seed)
     generator = generator.manual_seed(seeds)
 
     image_latents = torch.randn(
@@ -55,7 +57,7 @@ def create_latents_from_seeds(pipeline, seeds, height, width, device):
     return latents
 
 
-def make_img_prediction(pipeline, prompt: str, negative_prompt: str, **kwargs):
+def make_txt_2_img_prediction(pipeline, prompt: str, negative_prompt: str, **kwargs):
     """
     :param pipeline: The Diffusion pipeline used to generate Images
     :param prompt: The text prompt
@@ -68,7 +70,6 @@ def make_img_prediction(pipeline, prompt: str, negative_prompt: str, **kwargs):
         device = kwargs['device']
     else:
         device = 'cpu'
-
 
     # Manual Embedding of prompt. This is to counter the 77 Token limit imposed by CLIP
     max_length = pipeline.tokenizer.model_max_length
@@ -100,10 +101,11 @@ def make_img_prediction(pipeline, prompt: str, negative_prompt: str, **kwargs):
         latents = latents.type(torch.float16)
 
         image = pipeline(prompt_embeds=prompt_embeds, negative_prompt_embeds=negative_prompt_embeds,
-                         guidance_scale=kwargs['CFG'], latents=latents).images[0]
+                         guidance_scale=kwargs['CFG'], latents=latents,
+                         num_inference_steps=kwargs['num_inference_steps']).images[0]
     else:
         image = pipeline(prompt_embeds=prompt_embeds, negative_prompt_embeds=negative_prompt_embeds,
-                         guidance_scale=kwargs['CFG']).images[0]
+                         guidance_scale=kwargs['CFG'], height=kwargs['height'], width=kwargs['width'],
+                         num_inference_steps=kwargs['num_inference_steps']).images[0]
 
     return image
-
