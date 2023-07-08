@@ -38,6 +38,9 @@ def main():
                                           width=width, CFG=CFG, num_inference_steps=num_inference_steps,
                                           img2img_strength=img2img_strength, reference_img_path=reference_image_path)
 
+    plt.imshow(image_out)
+    plt.show()
+    
     # For Image to Image
     pipeline = build_SD_pipeline_based_on_input(checkpoint_directory, device, pipeline_type='Img2Img',
                                                 scheduler=scheduler)

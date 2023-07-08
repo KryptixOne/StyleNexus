@@ -3,7 +3,7 @@ import torch
 def build_text_embeddings(pipeline,prompt, negative_prompt, device):
     """
     Builds embeddings for CLIP. Manually Done to get around the CLIP 77 token Limit
-    
+
     :param pipeline: SD pipeline
     :param prompt: Input User prompt For Diffusion
     :param negative_prompt: Negitive User Prompt for Diffusion
