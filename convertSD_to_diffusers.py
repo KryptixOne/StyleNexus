@@ -18,14 +18,20 @@ import argparse
 
 import torch
 
-from diffusers.pipelines.stable_diffusion.convert_from_ckpt import download_from_original_stable_diffusion_ckpt
+from diffusers.pipelines.stable_diffusion.convert_from_ckpt import (
+    download_from_original_stable_diffusion_ckpt,
+)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        "--checkpoint_path", default=None, type=str, required=True, help="Path to the checkpoint to convert."
+        "--checkpoint_path",
+        default=None,
+        type=str,
+        required=True,
+        help="Path to the checkpoint to convert.",
     )
     # !wget https://raw.githubusercontent.com/CompVis/stable-diffusion/main/configs/stable-diffusion/v1-inference.yaml
     parser.add_argument(
@@ -100,8 +106,16 @@ if __name__ == "__main__":
         action="store_true",
         help="Whether to store pipeline in safetensors format or not.",
     )
-    parser.add_argument("--dump_path", default=None, type=str, required=True, help="Path to the output model.")
-    parser.add_argument("--device", type=str, help="Device to use (e.g. cpu, cuda:0, cuda:1, etc.)")
+    parser.add_argument(
+        "--dump_path",
+        default=None,
+        type=str,
+        required=True,
+        help="Path to the output model.",
+    )
+    parser.add_argument(
+        "--device", type=str, help="Device to use (e.g. cpu, cuda:0, cuda:1, etc.)"
+    )
     parser.add_argument(
         "--stable_unclip",
         type=str,
@@ -123,9 +137,14 @@ if __name__ == "__main__":
         required=False,
     )
     parser.add_argument(
-        "--controlnet", action="store_true", default=None, help="Set flag if this is a controlnet checkpoint."
+        "--controlnet",
+        action="store_true",
+        default=None,
+        help="Set flag if this is a controlnet checkpoint.",
     )
-    parser.add_argument("--half", action="store_true", help="Save weights in half precision.")
+    parser.add_argument(
+        "--half", action="store_true", help="Save weights in half precision."
+    )
     args = parser.parse_args()
 
     pipe = download_from_original_stable_diffusion_ckpt(
@@ -151,6 +170,8 @@ if __name__ == "__main__":
 
     if args.controlnet:
         # only save the controlnet model
-        pipe.controlnet.save_pretrained(args.dump_path, safe_serialization=args.to_safetensors)
+        pipe.controlnet.save_pretrained(
+            args.dump_path, safe_serialization=args.to_safetensors
+        )
     else:
         pipe.save_pretrained(args.dump_path, safe_serialization=args.to_safetensors)
