@@ -17,11 +17,19 @@ Project Should do the following:
 
 ## 2. Build Base In-Painting Img2Img and DreamBooth Pipeline For SD [ ]
     --> Img2Img Integration [X]
-    --> DreamBooth Integration [ ]
+    --> DreamBooth Integration [ ] 
+        -> Temporary Hold on Dreambooth Integration. Training is too resource intensive and it takes too long to train
     --> In-Painting Integration (Don't worry about mask creation yet) [X]
 
 ## 3. Build workflow that ultilizes each pipeline and produces output images given an input [ ] 
     Note that the goal here blends with goal number 4
+    --> Inpainting Method Workflow Creation [ ]
+        a. Acquire Reference Image of object [ ] 
+        b. Create Mask for Img2Img Inpainting [ ]
+        c. Generate Img [ ]
+        d. Build secondary Mask for Generated Image (on borders) [ ]
+        e. Generate Img again using previous generated img and new mask. [ ]
+        f. Save image. [ ]
 
 ## 4. Identify area of interest based on reference images. [ ]
 
