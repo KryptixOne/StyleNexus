@@ -34,6 +34,7 @@ Project Should do the following:
 ## 4. Identify area of interest based on reference images. [ ]
 
     --> Create masks with segmentation net. [ ]
+        a. "Segment Anything" Paper: https://arxiv.org/pdf/2304.02643.pdf
     --> Define Inpainting area [ ]
     --> Define Border of Inpainting area for Second pass to smooth border artifacts [ ]
     --> If using DreamBooth-like methodology, Not required
