@@ -1,3 +1,4 @@
+import cv2
 from PIL import Image
 import warnings
 from utils.create_embeddings import build_text_embeddings
@@ -10,15 +11,20 @@ def resize_png_image(image_path, new_width, new_height):
     resizes an input image to fit the desired new paramters
     """
     # Open the image
-    image = Image.open(image_path)
+    if type(image_path) == str:
+        image = Image.open(image_path)
+    else:
+        image_path = cv2.bitwise_not(image_path)
+        image = Image.fromarray(image_path)
 
     # Resize the image
+
     resized_image = image.resize((new_width, new_height), resample=Image.BILINEAR)
 
     return resized_image
 
 
-def make_Inpainting_prediction(pipeline, prompt: str, negative_prompt: str, **kwargs):
+def make_inpainting_prediction(pipeline, prompt: str, negative_prompt: str, **kwargs):
     """
     :param pipeline: The Diffusion pipeline used to generate Images
     :param prompt: The text prompt
@@ -27,10 +33,12 @@ def make_Inpainting_prediction(pipeline, prompt: str, negative_prompt: str, **kw
     :return: Generated Images
     """
 
-    assert kwargs.get("init_img"), print("No initial Image path")
-    assert kwargs.get("mask_img"), print("No mask Image path")
+    assert kwargs.get("init_img"), print("No initial Image or image path")
+    assert kwargs.get("mask_img") is not None, print("No mask Image or image path ")
     assert kwargs.get("height"), print("No height specified")
     assert kwargs.get("width"), print("No width specified")
+    height = kwargs.get("height")
+    width = kwargs.get("width")
 
     # make both init and mask image equal size
     init_img = resize_png_image(kwargs["init_img"], kwargs["width"], kwargs["height"])
@@ -54,6 +62,8 @@ def make_Inpainting_prediction(pipeline, prompt: str, negative_prompt: str, **kw
         negative_prompt_embeds=negative_prompt_embeds,
         image=init_img,
         mask_image=mask_img,
+        height = height,
+        width = width,
         guidance_scale=kwargs["CFG"],
         num_inference_steps=kwargs["num_inference_steps"],
         strength=kwargs["img2img_strength"],
