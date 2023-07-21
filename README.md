@@ -39,8 +39,9 @@ Project Should do the following:
         e. Generate Img again using previous generated img and new mask. [ ] *Not Required
         f. Save image. [ ]
 
-![Original Photo](https://github.com/KryptixOne/ECommerce_Model/blob/DreamBooth_inpaint_Etc_Integration/OutputPics_Issues/GirlWearingLion.PNG)
-![Inpainted Photo](https://github.com/KryptixOne/ECommerce_Model/blob/DreamBooth_inpaint_Etc_Integration/OutputPics_Issues/outputnew.png)
+<img src="https://github.com/KryptixOne/ECommerce_Model/blob/DreamBooth_inpaint_Etc_Integration/OutputPics_Issues/GirlWearingLion.PNG" alt="Original Photo" width="50%"> <img src="https://github.com/KryptixOne/ECommerce_Model/blob/DreamBooth_inpaint_Etc_Integration/OutputPics_Issues/outputnew.png" alt="Inpainted Photo" width="50%">
+
+See left: Original Image, Right: Inpainted Image. Notice the alterations occurs during inpainting
 
 ## 4. Identify area of interest based on reference images. [ ]
 
