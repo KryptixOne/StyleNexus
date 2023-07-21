@@ -5,7 +5,7 @@ from diffusers import (
     DDIMScheduler,
 )
 import torch
-
+from segment_anything import sam_model_registry
 
 def build_SD_pipeline_based_on_input(
     checkpoint_path: str, device: str = "cuda", pipeline_type: str = None, **kwargs
@@ -18,7 +18,7 @@ def build_SD_pipeline_based_on_input(
     :param pipeline_type: one of the following types: "Inpaint", "Img2Img", "Text2Img", or "DreamBooth"
     :return: Pipeline for Stable Diffusion given a model
     """
-    valid_pipeline_types = ["Inpaint", "Img2Img", "Text2Img", "DreamBooth"]
+    valid_pipeline_types = ["Inpaint", "Img2Img", "Text2Img" ]
     assert (
         pipeline_type in valid_pipeline_types
     ), "pipeline specified cannot be NoneType. Choose from the following: {}".format(
@@ -42,10 +42,6 @@ def build_SD_pipeline_based_on_input(
             checkpoint_path, torch_dtype=torch.float16
         )
 
-    elif pipeline_type == "DreamBooth":
-        pipe = StableDiffusionInpaintPipeline.from_pretrained(
-            checkpoint_path, torch_dtype=torch.float16
-        )
 
     else:
         raise KeyError(
@@ -66,3 +62,8 @@ def build_SD_pipeline_based_on_input(
         )
 
     return pipe
+
+def build_SAM(checkpoint_path:str,device:str ='cuda'):
+    sam = sam_model_registry["vit_h"](checkpoint=checkpoint_path)
+    sam.to(device)
+    return sam

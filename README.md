@@ -32,17 +32,20 @@ Project Should do the following:
                 a. Small hole fill in using morphology [X]
                 b. Contour-level fill [X]
             --> Identify first 5 most relevant masks [X]
-        c. Generate Img [ ]
-        d. Build secondary Mask for Generated Image (on borders) [ ]
-        e. Generate Img again using previous generated img and new mask. [ ]
+        c. Generate Img [X]
+            --> Generated images affecting non-masked areas.
+            --> need to determine whats up
+        d. Build secondary Mask for Generated Image (on borders) [ ] *Not Required
+        e. Generate Img again using previous generated img and new mask. [ ] *Not Required
         f. Save image. [ ]
 
 ## 4. Identify area of interest based on reference images. [ ]
 
-    --> Create masks with segmentation net. [ ]
+    --> Create masks with segmentation net. [X]
         a. "Segment Anything" Paper: https://arxiv.org/pdf/2304.02643.pdf
-    --> Define Inpainting area [ ]
+    --> Define Inpainting area [X]
     --> Define Border of Inpainting area for Second pass to smooth border artifacts [ ]
+        * Not required if Segmentation Mask is of high Quality
     --> If using DreamBooth-like methodology, Not required
 
 ## 5. Incorporate Visual Similarity Metric.  [ ]
