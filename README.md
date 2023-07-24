@@ -43,6 +43,15 @@ Project Should do the following:
 
 See left: Original Image, Right: Inpainted Image. Notice the alterations occurs during inpainting
 
+### Update on Issue:
+Problem showing improvements after updating model weights.
+
+Merging Inpainting Model V1.5 with Model not used for in-painting updates successfully according to the following:
+A +(B-C) 
+Where A is Inpaint Model, B is our Model, and C is the non-inpaint version of A
+
+Note we also choose a merge multiplier of 1.
+
 ## 4. Identify area of interest based on reference images. [ ]
 
     --> Create masks with segmentation net. [X]

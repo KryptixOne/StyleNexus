@@ -23,6 +23,50 @@ def resize_png_image(image_path, new_width, new_height):
 
     return resized_image
 
+import cv2
+import numpy as np
+from PIL import Image
+
+def superimpose_images(diffused_image, orig_image, mask):
+    # Convert PIL images to NumPy arrays
+    diffused_image = np.array(diffused_image.convert("RGB"))
+    orig_image = np.array(orig_image.convert("RGB"))
+    mask = np.array(mask.convert("L"))
+
+    # Binarize the mask to have only 0 and 255 intensity values
+    _, mask_binarized = cv2.threshold(mask, 128, 255, cv2.THRESH_BINARY)
+
+    # Invert the mask
+    mask_inverted = cv2.bitwise_not(mask_binarized)
+
+    # Rescale the original image to match the size of the diffused image
+    orig_image_rescaled = cv2.resize(orig_image, (diffused_image.shape[1], diffused_image.shape[0]))
+
+    # Rescale the mask to match the original image's dimensions
+    mask_rescaled = cv2.resize(mask_inverted, (orig_image_rescaled.shape[1], orig_image_rescaled.shape[0]))
+
+    # Extract the masked section from the original image
+    masked_section = cv2.bitwise_and(orig_image_rescaled, orig_image_rescaled, mask=mask_rescaled)
+
+    # Extract the non-masked section from the diffused image
+    non_masked_section = cv2.bitwise_and(diffused_image, diffused_image, mask=mask_binarized)
+
+    # Combine the masked section and non-masked section to superimpose the extracted part on the diffused image
+    superimposed_image = cv2.add(masked_section, non_masked_section)
+
+    # Convert the result back to PIL image
+    superimposed_image = Image.fromarray(superimposed_image)
+
+    return superimposed_image
+
+# Example usage:
+# from PIL import Image
+# diffused_image = Image.open('diffused_image.jpg')
+# orig_image = Image.open('orig_image.jpg')
+# mask = Image.open('mask.jpg').convert('L')
+# result = superimpose_images(diffused_image, orig_image, mask)
+# result.show()
+
 
 def make_inpainting_prediction(pipeline, prompt: str, negative_prompt: str, **kwargs):
     """
@@ -68,5 +112,8 @@ def make_inpainting_prediction(pipeline, prompt: str, negative_prompt: str, **kw
         num_inference_steps=kwargs["num_inference_steps"],
         strength=kwargs["img2img_strength"],
     ).images[0]
+
+    if kwargs.get('make_lossless_superimposition'):
+        image = superimpose_images(image, init_img, mask_img)
 
     return image

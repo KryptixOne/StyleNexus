@@ -18,19 +18,16 @@ def main():
     checkpoint_path_SAM = r'D:\Ecommerce_FakeModel\SAM_Checkpoint\sam_vit_h_4b8939.pth'
 
     device = "cuda"
-    prompt = "A sexy Asian model wearing a graphic T-Shirt, (blue hair), Plain White Background,masterpiece, best quality, ultra-detailed, solo"
+    prompt = "A strong muscular male model with sunglasses wearing a graphic T-Shirt, (blue hair), Plain White Background,masterpiece, best quality, ultra-detailed, solo"
     negative_prompt = (
-        "lowres, bad anatomy, bad hands, text, error, "
-        "missing fingers, extra digit, fewer digits, cropped,"
-        " worst quality, low quality, normal quality, jpeg artifacts,"
-        " signature, watermark, username, blurry, artist name, young, loli"
+        "bad anatomy, bad hands, missing fingers, cropped, worst quality, low quality, normal quality,"
     )
     segmentation_prompt = 'a photo of a graphic T-Shirt'
 
     num_inference_steps = 20  # The number of denoising steps. Higher number usually leads to higher quality
     CFG = 7
-    height = 864
-    width = 592
+    height = 432
+    width = 296
 
     img2img_strength = 0.8
     reference_image_path = r'D:\ArtDesigns\Forselling\GirlWearingLion.PNG'
@@ -94,10 +91,12 @@ def main():
         img = cv2.imread(reference_image_path)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         orig_image_pil = Image.fromarray(img)
-
+        print('loading SAM...')
         sam = build_SAM(checkpoint_path=checkpoint_path_SAM, device='cuda')
+        print('loaded')
+        print('creating masks...')
         masks = create_all_mask_sam(img, sam=sam)
-
+        print('found '+str(len(masks))+ ' masks')
         img_bboxes = build_boundingbox_image_stack_from_masks(masks, orig_image_pil)
         probabilities, values, indices = clip_scoring(img_bboxes, segmentation_prompt)
 
@@ -117,11 +116,13 @@ def main():
             width=width,
             CFG=CFG,
             num_inference_steps=num_inference_steps,
-            img2img_strength=img2img_strength
+            img2img_strength=img2img_strength,
+            make_lossless_superimposition=True
         )
         plt.imshow(image_out)
         plt.show()
-        print()
+        image_out.save('output_musclarModel.png')
+
 
 if __name__ == "__main__":
     main()
