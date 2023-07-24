@@ -52,6 +52,12 @@ Where A is Inpaint Model, B is our Model, and C is the non-inpaint version of A
 
 Note we also choose a merge multiplier of 1.
 
+See results below
+
+<img src="https://github.com/KryptixOne/ECommerce_Model/blob/DreamBooth_inpaint_Etc_Integration/OutputPics_Issues/ErroneousMale%20Model.png" alt="Original_superimposed Photo" width="30%"> <img src="https://github.com/KryptixOne/ECommerce_Model/blob/DreamBooth_inpaint_Etc_Integration/OutputPics_Issues/With_New_inpaintModel.png" alt="Inpainted_model Photo" width="30%">
+
+
+
 ## 4. Identify area of interest based on reference images. [ ]
 
     --> Create masks with segmentation net. [X]
