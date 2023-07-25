@@ -3,10 +3,9 @@ from modules.text_to_img_SD import make_txt_2_img_prediction
 from modules.img_2_img_SD import make_img_2_img_prediction
 from modules.in_painting_SD import make_inpainting_prediction
 from utils.pipeline_loader import build_SD_pipeline_based_on_input
-from utils.create_masks_from_prompts import build_SAM, build_boundingbox_image_stack_from_masks, create_all_mask_sam, \
-    clip_scoring, close_mask_holes
+from utils.create_masks_from_prompts import create_border_mask, build_SAM, build_boundingbox_image_stack_from_masks, \
+    create_all_mask_sam, clip_scoring, close_mask_holes
 from PIL import Image
-
 import cv2
 
 
@@ -14,20 +13,21 @@ def main():
     # inputs
     seeds = None
     scheduler = "DDIM"
-    checkpoint_directory_SD = r"D:\Ecommerce_FakeModel\Models_Converted\Lyriel_Diffusers"
+    checkpoint_directory_SD = r"D:\Ecommerce_FakeModel\Models_Converted\RealVision"
+    #checkpoint_directory_SD = r'D:\Ecommerce_FakeModel\Models_Converted\Lyriel_Diffusers'
     checkpoint_path_SAM = r'D:\Ecommerce_FakeModel\SAM_Checkpoint\sam_vit_h_4b8939.pth'
 
     device = "cuda"
-    prompt = "A strong muscular male model with sunglasses wearing a graphic T-Shirt, (blue hair), Plain White Background,masterpiece, best quality, ultra-detailed, solo"
-    negative_prompt = (
-        "bad anatomy, bad hands, missing fingers, cropped, worst quality, low quality, normal quality,"
-    )
+    prompt = "RAW photo, A sexy female model with sunglasses wearing a fitted graphic T-Shirt, Plain White Background,8k uhd, dslr, soft lighting, high quality, film grain, Fujifilm XT3"
+    negative_prompt = ("(deformed iris, deformed pupils, semi-realistic, cgi, 3d, render, sketch, cartoon, drawing, anime), text, cropped, out of frame, worst quality, low quality, jpeg artifacts, ugly, duplicate, morbid, mutilated, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, blurry, dehydrated, bad anatomy, bad proportions, extra limbs, cloned face, disfigured, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, fused fingers, too many fingers, long neck"
+       )
     segmentation_prompt = 'a photo of a graphic T-Shirt'
 
     num_inference_steps = 20  # The number of denoising steps. Higher number usually leads to higher quality
     CFG = 7
     height = 432
     width = 296
+    border_mask_width = 32
 
     img2img_strength = 0.8
     reference_image_path = r'D:\ArtDesigns\Forselling\GirlWearingLion.PNG'
@@ -96,12 +96,12 @@ def main():
         print('loaded')
         print('creating masks...')
         masks = create_all_mask_sam(img, sam=sam)
-        print('found '+str(len(masks))+ ' masks')
+        print('found ' + str(len(masks)) + ' masks')
         img_bboxes = build_boundingbox_image_stack_from_masks(masks, orig_image_pil)
         probabilities, values, indices = clip_scoring(img_bboxes, segmentation_prompt)
 
         outmask_holes_filled, outmask_contour_filled = close_mask_holes(masks[indices[0]]['segmentation'])
-
+        border_mask = create_border_mask(outmask_contour_filled, border_mask_width)
         # note that for inpainting. Black pixels are preserved and White pixels are repainted
 
         image_out = make_inpainting_prediction(
@@ -121,7 +121,29 @@ def main():
         )
         plt.imshow(image_out)
         plt.show()
-        image_out.save('output_musclarModel.png')
+        image_out.save('output_musclarModel_OnceProcessed.png')
+
+
+        image_out = make_inpainting_prediction(
+            pipeline,
+            prompt,
+            negative_prompt,
+            init_img=image_out,
+            mask_img=border_mask,
+            device=device,
+            seeds=seeds,
+            height=height,
+            width=width,
+            CFG=CFG,
+            num_inference_steps=32,
+            img2img_strength=0.3,
+            make_lossless_superimposition=True
+        )
+        plt.imshow(image_out)
+        plt.show()
+
+
+        image_out.save('output_musclarModel_dooubleProcessed.png')
 
 
 if __name__ == "__main__":

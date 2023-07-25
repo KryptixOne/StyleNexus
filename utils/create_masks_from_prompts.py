@@ -110,6 +110,24 @@ def close_mask_holes(mask):
 
     return closed_mask, filled_mask
 
+def create_border_mask(mask, border_width, invert=True):
+    # Convert the mask to a NumPy array if it is a PIL image
+    if isinstance(mask, Image.Image):
+        mask = np.array(mask.convert("L"))
+
+    # Find the contours of the mask
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    # Create an empty image to draw the border mask
+    border_mask = np.zeros_like(mask)
+
+    # Draw the border along the contours
+    cv2.drawContours(border_mask, contours, -1, 255, border_width)
+
+    if invert:
+        border_mask = cv2.bitwise_not(border_mask)
+
+    return border_mask
 
 if __name__ == "__main__":
     img_path = r'D:\ArtDesigns\Forselling\GirlWearingLion.PNG'

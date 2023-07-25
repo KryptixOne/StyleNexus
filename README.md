@@ -35,9 +35,9 @@ Project Should do the following:
         c. Generate Img [X]
             --> Generated images affecting non-masked areas.
             --> need to determine whats up
-        d. Build secondary Mask for Generated Image (on borders) [ ] *Not Required
-        e. Generate Img again using previous generated img and new mask. [ ] *Not Required
-        f. Save image. [ ]
+        d. Build secondary Mask for Generated Image (on borders) [X] *Not Required
+        e. Generate Img again using previous generated img and new mask. [X] *Not Required
+        f. Save image. [X]
 
 <img src="https://github.com/KryptixOne/ECommerce_Model/blob/DreamBooth_inpaint_Etc_Integration/OutputPics_Issues/GirlWearingLion.PNG" alt="Original Photo" width="30%"> <img src="https://github.com/KryptixOne/ECommerce_Model/blob/DreamBooth_inpaint_Etc_Integration/OutputPics_Issues/outputnew.png" alt="Inpainted Photo" width="30%">
 
@@ -58,26 +58,29 @@ See results below
 
 
 
+
 ## 4. Identify area of interest based on reference images. [ ]
 
     --> Create masks with segmentation net. [X]
         a. "Segment Anything" Paper: https://arxiv.org/pdf/2304.02643.pdf
     --> Define Inpainting area [X]
-    --> Define Border of Inpainting area for Second pass to smooth border artifacts [ ]
+    --> Define Border of Inpainting area for Second pass to smooth border artifacts [X]
         * Not required if Segmentation Mask is of high Quality
     --> If using DreamBooth-like methodology, Not required
 
-## 5. Incorporate Visual Similarity Metric.  [ ]
+## 5. Hyperparameter Tuning
+
+## 6. Incorporate Visual Similarity Metric.  [ ]
 
     --> Metric will rate how "similar" the generated object is to reference.  [ ]
     --> can use segmentation net to identify AoI [ ]
     --> Need to determine this metric still. As variation, pose, angle, lighting, etc. should not negatively affect
     the Metric but visual distortions to the reference should [ ]
 
-## 6. Incorporate Image Filtering Based on Similarity Metric [ ]
+## 7. Incorporate Image Filtering Based on Similarity Metric [ ]
 
     --> Remove Images that don't achieve a certain threshold. [ ]
     --> For Successful Images, Log Hyperparameters, seed, and reference Images (useful for future training) [ ]
     --> Return X number of Generated Images [ ]
 
-## 7. Build a WebUI that Allows for independent user usage [ ]
+## 8. Build a WebUI that Allows for independent user usage [ ]
