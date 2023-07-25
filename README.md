@@ -3,7 +3,7 @@
 
 Project Should do the following:
 
-## 1. Take the following as inputs from the User: [ ]
+## 1. Take the following as inputs from the User: [X]
 
     a. sequence of Reference Images [ ]
         --> Function for Acquisition and Transformation developed [X]
@@ -15,15 +15,15 @@ Project Should do the following:
     c. Desired Negative Prompt. Or This can be predetermined by us. [X]
         --> Integrated into SD Pipeline [X]
 
-## 2. Build Base In-Painting Img2Img and DreamBooth Pipeline For SD [ ]
+## 2. Build Base In-Painting Img2Img and DreamBooth Pipeline For SD [X]
     --> Img2Img Integration [X]
-    --> DreamBooth Integration [ ] 
+    --> DreamBooth Integration [ ] *Not Required
         -> Temporary Hold on Dreambooth Integration. Training is too resource intensive and it takes too long to train
     --> In-Painting Integration (Don't worry about mask creation yet) [X]
 
-## 3. Build workflow that ultilizes each pipeline and produces output images given an input [ ] 
+## 3. Build workflow that ultilizes each pipeline and produces output images given an input [X] 
     Note that the goal here blends with goal number 4
-    --> Inpainting Method Workflow Creation [ ]
+    --> Inpainting Method Workflow Creation [X]
         a. Acquire Reference Image of object [X] 
         b. Create Mask for Img2Img Inpainting [X]
             --> Implement Segment Anything Model (Note that text prompt input not public [X]
@@ -59,7 +59,7 @@ See results below
 
 
 
-## 4. Identify area of interest based on reference images. [ ]
+## 4. Identify area of interest based on reference images. [X]
 
     --> Create masks with segmentation net. [X]
         a. "Segment Anything" Paper: https://arxiv.org/pdf/2304.02643.pdf
@@ -68,7 +68,7 @@ See results below
         * Not required if Segmentation Mask is of high Quality
     --> If using DreamBooth-like methodology, Not required
 
-## 5. Hyperparameter Tuning
+## 5. Hyperparameter Tuning [ ]
 
 ## 6. Incorporate Visual Similarity Metric.  [ ]
 
