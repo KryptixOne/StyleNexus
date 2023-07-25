@@ -28,9 +28,11 @@ def build_SD_pipeline_based_on_input(
     assert checkpoint_path, "Checkpoint_path cannot be NoneType"
 
     if pipeline_type == "Inpaint":
+
         pipe = StableDiffusionInpaintPipeline.from_pretrained(
             checkpoint_path, torch_dtype=torch.float16
         )
+
 
     elif pipeline_type == "Img2Img":
         pipe = StableDiffusionImg2ImgPipeline.from_pretrained(
