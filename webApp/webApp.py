@@ -35,17 +35,23 @@ selected_page = st.sidebar.radio('Go to', ['Home', 'Create your Fashion Models',
 st.title('Welcome to ML App')
 st.write('This is a simple homepage for your ML app.')
 
-# Check if the user is logged in before displaying the Inference page content
-if selected_page == 'Inference':
-    st.subheader('Login')
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
+# Set this variable to control whether login is required or not
+login_required = False  # Set to True to require login, or False to bypass login
 
-    if st.button("Login"):
-        if username in users and verify_password(password, users[username]["password_hash"]):
-            secure_inference_page()
-        else:
-            st.warning("Invalid username or password. Please try again.")
+# Check if the user is logged in before displaying the Inference page content
+if selected_page == 'Create your Fashion Models':
+    if login_required:
+        st.subheader('Login')
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+
+        if st.button("Login"):
+            if username in users and verify_password(password, users[username]["password_hash"]):
+                secure_inference_page()
+            else:
+                st.warning("Invalid username or password. Please try again.")
+    else:
+        secure_inference_page()
 
 # Examples page content
 elif selected_page == 'Examples':
