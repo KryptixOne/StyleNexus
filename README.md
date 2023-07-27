@@ -5,9 +5,9 @@ Project Should do the following:
 
 ## 1. Take the following as inputs from the User: [X]
 
-    a. sequence of Reference Images [ ]
+    a. sequence of Reference Images or a Single Image [X]
         --> Function for Acquisition and Transformation developed [X]
-        --> Integrate into SD/Dreambooth pipeline [ ] 
+        --> Integrate into SD pipeline [X] 
 
     b. Desired Prompt [X]
         --> Integrated into SD Pipeline [X]
@@ -39,6 +39,15 @@ Project Should do the following:
         e. Generate Img again using previous generated img and new mask. [X] *Not Required
         f. Save image. [X]
 
+    --> Nice-To-Haves:
+        a. LoRA integration (from .safetensors if using publicly available LoRAs) [X]
+        b. Color Corrections [ ] 
+        c. First Pass Auto-Beautify Filter (May include auto correction) [ ]
+        d. Multiple-Beauty Filters on first pass (allow selection prior to second pass) [ ]
+        e. When image is just the Shirt without Human structural Information. Superimpose on random model/manikin [ ] 
+    -->
+
+    
 <img src="https://github.com/KryptixOne/ECommerce_Model/blob/DreamBooth_inpaint_Etc_Integration/OutputPics_Issues/GirlWearingLion.PNG" alt="Original Photo" width="30%"> <img src="https://github.com/KryptixOne/ECommerce_Model/blob/DreamBooth_inpaint_Etc_Integration/OutputPics_Issues/outputnew.png" alt="Inpainted Photo" width="30%">
 
 See left: Original Image, Right: Inpainted Image. Notice the alterations occurs during inpainting
@@ -84,3 +93,6 @@ See results below
     --> Return X number of Generated Images [ ]
 
 ## 8. Build a WebUI that Allows for independent user usage [ ]
+
+    --> uhhhh TBD
+
