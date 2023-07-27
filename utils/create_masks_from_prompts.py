@@ -55,9 +55,9 @@ def clip_scoring(image_bbox: list, prompt: str):
         image_features /= image_features.norm(dim=-1, keepdim=True)
         text_features /= text_features.norm(dim=-1, keepdim=True)
         similarity = (100.0 * text_features @ image_features.T).softmax(dim=-1)
-        values, indices = similarity[0].topk(5)
+        values, indices = similarity[0].topk(min(len(similarity[0]), 5))
 
-    print("Label probs:", similarity)
+    # print("Label probs:", similarity)
     return similarity, values, indices
 
 
@@ -110,6 +110,7 @@ def close_mask_holes(mask):
 
     return closed_mask, filled_mask
 
+
 def create_border_mask(mask, border_width, invert=True):
     # Convert the mask to a NumPy array if it is a PIL image
     if isinstance(mask, Image.Image):
@@ -128,6 +129,7 @@ def create_border_mask(mask, border_width, invert=True):
         border_mask = cv2.bitwise_not(border_mask)
 
     return border_mask
+
 
 if __name__ == "__main__":
     img_path = r'D:\ArtDesigns\Forselling\GirlWearingLion.PNG'
