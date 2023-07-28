@@ -20,13 +20,13 @@ def main():
     lora_path = '' #"D:\Ecommerce_FakeModel\Models_Converted\Lora\polyhedron_new_skin_v1.1.safetensors"
     lora_alpha =1
     device = "cuda"
-    prompt = " A sexy model with sunglasses wearing a fitted Polo T-Shirt, Plain White Background"
+    prompt = " (A sexy model with sunglasses wearing a fitted Polo T-Shirt), Plain White Background"
     negative_prompt = ('cartoon, painting, illustration, (worst quality, low quality, normal quality:2), NSFW'
        )
     segmentation_prompt = 'a photo of a Polo T-Shirt'
 
     num_inference_steps_list = [
-                            50]  # The number of denoising steps. Higher number usually leads to higher quality
+                            20]  # The number of denoising steps. Higher number usually leads to higher quality
     CFG_list = [6] #6 is awesome
     height = 784
     width = 512
