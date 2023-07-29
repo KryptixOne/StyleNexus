@@ -1,0 +1,143 @@
+<!-- templates/about.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Examples - StyleNexus</title>
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
+    <style>
+        /* Your CSS styles go here */
+        body {
+            font-family: 'Josefin Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Background Gradient */
+        body {
+            background: linear-gradient(132deg, #FC415A, #591BC5, #212335);
+            background-size: 400% 400%;
+            animation: Gradient 15s ease infinite;
+        }
+
+        @keyframes Gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Navigation Bar */
+        nav {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #FFF;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #FC415A;
+        }
+
+        /* Logo */
+        .logo {
+            width: 40px;
+            height: 40px;
+            background-color: #FFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .logo span {
+            color: #FC415A;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        /* About Content */
+        .about-content {
+            text-align: center;
+            color: #FFF;
+            padding: 100px 20px;
+        }
+
+        .about-content h1 {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .about-content p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('homepage') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('examples') }}">Examples</a></li>
+            <li><a href="/demo">Demo</a></li>
+            <li><a href="/contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- About Content -->
+    <div class="about-content">
+        <h1>Examples</h1>
+         <p>Discover the captivating world of AI through an array of awe-inspiring examples! Immerse yourself in mesmerizing
+         AI-generated artworks, experience the brilliance of natural language processing, and witness the wonders of 
+         computer vision applications. Prepare to be amazed by the groundbreaking possibilities that cutting-edge AI 
+         technology brings to life in a collection of stunning visuals. Step into the future of innovation and 
+         creativity with our extraordinary AI examples!</p>
+		 
+		 <h2>User Examples </h2>
+    
+		<!-- Inserting the images side-by-side -->
+		<div style="display: flex; justify-content: center; margin-top: 30px;">
+			<div style="margin-right: 20px;">
+				<img src="{{ url_for('static', filename='ref3.jpg') }}" alt="User modelling a unique sweater" style="width: 400px;">
+				<p style="text-align: center;">User modelling a unique <br> 
+				sweater</p>
+			</div>
+			<div>
+				<img src="{{ url_for('static', filename='ref3_to_model.png') }}" alt="Ai Generated Fashion Model Wearing that same sweater" style="width: 400px;">
+				<p style="text-align: center;">AI generated fashion model <br>
+				wearing the same sweater</p>
+			</div>
+		</div>
+	
+	</div>
+</body>
+</html>

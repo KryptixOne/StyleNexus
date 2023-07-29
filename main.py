@@ -20,21 +20,21 @@ def main():
     lora_path = '' #"D:\Ecommerce_FakeModel\Models_Converted\Lora\polyhedron_new_skin_v1.1.safetensors"
     lora_alpha =1
     device = "cuda"
-    prompt = " A sexy model with sunglasses wearing a fitted Polo T-Shirt, Plain White Background"
+    prompt = " (A sexy model with sunglasses wearing a fitted Polo T-Shirt), Plain White Background"
     negative_prompt = ('cartoon, painting, illustration, (worst quality, low quality, normal quality:2), NSFW'
        )
     segmentation_prompt = 'a photo of a Polo T-Shirt'
 
     num_inference_steps_list = [
-                            50]  # The number of denoising steps. Higher number usually leads to higher quality
-    CFG_list = [6] #6 is awesome
+                            20,30,40,50]  # The number of denoising steps. Higher number usually leads to higher quality
+    CFG_list = [4,5,6,7] #6 is awesome
     height = 784
     width = 512
-    border_mask_width = 32
+    border_mask_width = 16
     img2img_strength = 0.8
-    img2img_strength_first_pass = [0.9] # 0.9 on first. Heavy alteration should be given
-    img2img_strength_second_pass = [0.4] #0.4 -0.5 best visual # lower to reduce effects of superimposition but also to limit border distortion
-    HyperParameterTune_num = 1
+    img2img_strength_first_pass = [0.5,0.6,0.7,0.8,0.9] # 0.9 on first. Heavy alteration should be given
+    img2img_strength_second_pass = [0.3,0.4,0.5,0.6,0.8] #0.4 -0.5 best visual # lower to reduce effects of superimposition but also to limit border distortion
+    HyperParameterTune_num = 100
     #reference_image_path = r'D:\ArtDesigns\Forselling\GirlWearingLion.PNG'
     reference_image_path = r"D:\Ecommerce_FakeModel\Reference_imgs\empty.png"
     """
