@@ -1,0 +1,147 @@
+<!-- templates/about.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>About Us - StyleNexus</title>
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
+    <style>
+        /* Your CSS styles go here */
+        body {
+            font-family: 'Josefin Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Background Gradient */
+        body {
+            background: linear-gradient(132deg, #FC415A, #591BC5, #212335);
+            background-size: 400% 400%;
+            animation: Gradient 15s ease infinite;
+        }
+
+        @keyframes Gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Navigation Bar */
+        nav {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #FFF;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #FC415A;
+        }
+
+        /* Logo */
+        .logo {
+            width: 40px;
+            height: 40px;
+            background-color: #FFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .logo span {
+            color: #FC415A;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        /* About Content */
+        .about-content {
+            text-align: center;
+            color: #FFF;
+            padding: 100px 20px;
+        }
+
+        .about-content h1 {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .about-content p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('homepage') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="/examples">Examples</a></li>
+            <li><a href="/demo">Demo</a></li>
+            <li><a href="/contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- About Content -->
+    <div class="about-content">
+        <h1>Welcome to StyleNexus!</h1>
+        <p> At StyleNexus, we are revolutionizing the world of fashion by combining cutting-edge AI technology with 
+        creativity and affordability. Our state-of-the-art generative AI model empowers you to have custom high-quality
+        fashion models for your retail needs without the burden of exorbitant costs typically associated with hiring 
+        professional models.</p>
+		<h2>Affordable Fashion Solutions:</h2>
+		<p> We understand the challenges faced by businesses and individuals in the fashion industry. 
+        That's why we developed our AI model to provide accessible and cost-effective fashion solutions. 
+        By using StyleNexus, you gain access to a vast library of AI-generated images featuring professional-looking 
+        models confidently wearing your clothing line or fashion products.</p>
+		<h2>High-Quality without Compromise: </h2>
+		<p>StyleNexus delivers uncompromising quality that rivals traditional fashion modeling. Our AI model is trained on 
+        extensive datasets of fashion imagery, allowing it to produce remarkably realistic and detailed representations 
+        of your designs. Say goodbye to costly photoshoots and welcome the ease and convenience of AI-generated 
+        high-quality fashion models. </p>
+		<h2>Empowering Your Fashion Vision: </h2>
+		<p> Whether you're a fashion retailer, designer, or entrepreneur, StyleNexus puts the creative control in your 
+        hands. Experiment with different styles, colors, and looks without limitations. Our AI model enables you to 
+        envision how your designs would look on a professional model, giving life to your fashion aspirations like
+        never before.</p>
+		<h2>Join the StyleNexus Revolution: </h2>
+		<p> Embrace a future where fashion and technology converge seamlessly. Join our community of forward-thinking 
+        fashion enthusiasts and industry pioneers. StyleNexus empowers you to explore new possibilities, 
+        reduce expenses, and revolutionize the way you present your fashion collections to the world.</p>
+		<p>Thank you for choosing StyleNexus as your ultimate fashion companion. Experience the power of our 
+        state-of-the-art generative AI model and embark on a journey of fashion innovation and affordability. </p>
+
+    </div>
+</body>
+</html>

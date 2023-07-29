@@ -94,5 +94,14 @@ See results below
 
 ## 8. Build a WebUI that Allows for independent user usage [ ]
 
-    --> uhhhh TBD
-
+    --> Try different frameworks [X]
+        a. Streamlit [X]
+        b. Gradio [X]
+        c. Flask [X]
+    --> Determine which framework best suits your needs [X]
+    --> Build sections using desired framework [ ]
+        a. Homepage [X]
+        b. About Us [ ]
+        c. Examples [ ]
+        d. Demo [ ]
+        e. Contact [ ]
