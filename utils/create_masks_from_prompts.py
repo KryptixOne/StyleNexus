@@ -26,8 +26,8 @@ def show_anns(anns):
 
 def create_all_mask_sam(img, sam):
     mask_generator = SamAutomaticMaskGenerator(sam,
-                                               points_per_batch=128,
-                                               points_per_side=4,
+                                               points_per_batch=64,
+                                               points_per_side=32,
                                                )
     masks = mask_generator.generate(img)
     return masks
