@@ -1,4 +1,3 @@
-# modules/text_to_img_API.py
 from modules.text_to_img_SD import make_txt_2_img_prediction
 from modules.img_2_img_SD import make_img_2_img_prediction
 from modules.in_painting_SD import make_inpainting_prediction
@@ -7,7 +6,6 @@ from utils.create_masks_from_prompts import create_border_mask, build_SAM, build
     create_all_mask_sam, clip_scoring, close_mask_holes
 from PIL import Image
 import cv2
-import random
 
 
 def inpainting_api(prompt: str,
@@ -52,6 +50,7 @@ def inpainting_api(prompt: str,
     :param make_lossless_superimposition: To superimpose image or not. Default: True
     :return: Returns a list of generated Images of form [first_pass_image, second_pass_image]
     """
+
     pipeline = build_SD_pipeline_based_on_input(checkpoint_directory_SD, device, pipeline_type="Inpaint",
                                                 scheduler=scheduler)
 
