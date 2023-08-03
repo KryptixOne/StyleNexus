@@ -11,84 +11,31 @@ import random
 
 
 def main():
-    # inputs
+    # inputs ***************************
     seeds = None
     scheduler = "DDIM"
+    reference_image_path = r"D:\Ecommerce_FakeModel\Reference_imgs\WaterGunRef.jpg"
     checkpoint_directory_SD = r"D:\Ecommerce_FakeModel\Models_Converted\Photon_inpaint"
-    # checkpoint_directory_SD = r'D:\Ecommerce_FakeModel\Models_Converted\Lyriel_Diffusers'
     checkpoint_path_SAM = r'D:\Ecommerce_FakeModel\SAM_Checkpoint\sam_vit_h_4b8939.pth'
+    direct = r'D:/Ecommerce_FakeModel/OutputPics_Issues/Tuning/'
     lora_path = '' #"D:\Ecommerce_FakeModel\Models_Converted\Lora\polyhedron_new_skin_v1.1.safetensors"
-    lora_alpha =1
+    lora_alpha = 1
     device = "cuda"
-    prompt = " (A sexy model with sunglasses wearing a fitted Polo T-Shirt), Plain White Background"
+    prompt = " (A sexy model with sunglasses and a water gun), waterfall and river background"
     negative_prompt = ('cartoon, painting, illustration, (worst quality, low quality, normal quality:2), NSFW'
        )
-    segmentation_prompt = 'a photo of a Polo T-Shirt'
-
-    num_inference_steps_list = [
-                            20,30,40,50]  # The number of denoising steps. Higher number usually leads to higher quality
-    CFG_list = [4,5,6,7] #6 is awesome
+    segmentation_prompt = 'a photo of water-gun, water gun '
+    num_inference_steps_list = [50]  # The number of denoising steps. Higher number usually leads to higher quality
+    cfg_list = [6] #6 is awesome
     height = 784
     width = 512
-    border_mask_width = 16
-    img2img_strength = 0.8
-    img2img_strength_first_pass = [0.5,0.6,0.7,0.8,0.9] # 0.9 on first. Heavy alteration should be given
-    img2img_strength_second_pass = [0.3,0.4,0.5,0.6,0.8] #0.4 -0.5 best visual # lower to reduce effects of superimposition but also to limit border distortion
-    HyperParameterTune_num = 100
-    #reference_image_path = r'D:\ArtDesigns\Forselling\GirlWearingLion.PNG'
-    reference_image_path = r"D:\Ecommerce_FakeModel\Reference_imgs\empty.png"
-    """
-    img2img_strength (float, optional, defaults to 0.8) — Conceptually, says how much to transform the reference img.
-    Must be between 0 and 1. image will be used as a starting point, adding more noise to it the larger the strength.
-    The number of denoising steps depends on the amount of noise initially added. When strength is 1, added noise will
-    be maximum and the denoising process will run for the full number of iterations specified in num_inference_steps.
-    A value of 1, therefore, essentially ignores image.
-    """
+    border_mask_width = 8
+    img2img_strength_first_pass = [0.8] # 0.9 on first. Heavy alteration should be given
+    img2img_strength_second_pass = [0.5] #0.4 -0.5 best visual # lower to reduce effects of superimposition but also to limit border distortion
+    HyperParameterTune_num = 1
+    # ******************************
 
-    # For text to img
-    run_text_to_image = False
-    if run_text_to_image:
-        pipeline = build_SD_pipeline_based_on_input(
-            checkpoint_directory_SD, device, pipeline_type="Text2Img", scheduler=scheduler
-        )
-        image_out = make_txt_2_img_prediction(
-            pipeline,
-            prompt,
-            negative_prompt,
-            device=device,
-            seeds=seeds,
-            height=height,
-            width=width,
-            CFG=CFG_list[0],
-            num_inference_steps=num_inference_steps_list[0],
-            img2img_strength=img2img_strength,
-            reference_img_path=reference_image_path,
-        )
-
-    # For Image to Image
-    run_image_to_image = False
-    if run_image_to_image:
-        pipeline = build_SD_pipeline_based_on_input(
-            checkpoint_directory_SD, device, pipeline_type="Img2Img", scheduler=scheduler
-        )
-
-        image_out = make_img_2_img_prediction(
-            pipeline,
-            prompt,
-            negative_prompt,
-            device=device,
-            seeds=seeds,
-            height=height,
-            width=width,
-            CFG=CFG_list[0],
-            num_inference_steps=num_inference_steps_list[0],
-            img2img_strength=img2img_strength,
-            reference_img_path=reference_image_path,
-        )
-
-    direct = r'D:/Ecommerce_FakeModel/OutputPics_Issues/Tuning/'
     # inpaint img2img
-
 
     run_inpainting = True
     if run_inpainting:
@@ -117,7 +64,7 @@ def main():
         # note that for inpainting. Black pixels are preserved and White pixels are repainted
 
         for i in range(HyperParameterTune_num):
-            CFG_choice = random.randrange(len(CFG_list))
+            cfg_choice = random.randrange(len(cfg_list))
             num_inference_choice = random.randrange(len(num_inference_steps_list))
             img2img_first_choice = random.randrange(len(img2img_strength_first_pass))
             img2img_second_choice = random.randrange(len(img2img_strength_second_pass))
@@ -132,7 +79,7 @@ def main():
                 seeds=seeds,
                 height=height,
                 width=width,
-                CFG=CFG_list[CFG_choice],
+                CFG=cfg_list[cfg_choice],
                 num_inference_steps=num_inference_steps_list[num_inference_choice],
                 img2img_strength=img2img_strength_first_pass[img2img_first_choice],
                 make_lossless_superimposition=True
@@ -155,7 +102,7 @@ def main():
                 seeds=seeds,
                 height=height,
                 width=width,
-                CFG=CFG_list[CFG_choice],
+                CFG=cfg_list[cfg_choice],
                 num_inference_steps=num_inference_steps_list[num_inference_choice],
                 img2img_strength=img2img_strength_second_pass[img2img_second_choice],
                 make_lossless_superimposition=True
