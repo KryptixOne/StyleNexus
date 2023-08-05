@@ -4,3 +4,5 @@ Models_Converted
 SAM_Checkpoint
 OutputPics_Issues
 Reference_imgs
+
+*/__pycache__/*
