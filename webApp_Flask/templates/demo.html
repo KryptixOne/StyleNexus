@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>About Us - StyleNexus</title>
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
+    <style>
+        /* Your CSS styles go here */
+        body {
+            font-family: 'Josefin Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Background Gradient */
+        body {
+            background: linear-gradient(132deg, #FC415A, #591BC5, #212335);
+            background-size: 400% 400%;
+            animation: Gradient 15s ease infinite;
+        }
+
+        @keyframes Gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Navigation Bar */
+        nav {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #FFF;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #FC415A;
+        }
+
+        /* Logo */
+        .logo {
+            width: 40px;
+            height: 40px;
+            background-color: #FFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .logo span {
+            color: #FC415A;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        /* About Content */
+        .about-content {
+            text-align: center;
+            color: #FFF;
+            padding: 100px 20px;
+        }
+
+        .about-content h1 {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .about-content p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+
+        /* Form and Button Styles */
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .input-label {
+            color: #FFF;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+			margin-top: 20px;
+        }
+
+        .input-field {
+            padding: 10px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 5px;
+            width: 300px;
+            margin-bottom: 10px;
+        }
+		
+		.input-file {
+			display: none; /* Hide the original file input element */
+		}
+		
+		.upload-btn {
+		/* Style the button as desired */
+			width: 150px;
+			height: 50px;
+			background-color: #FC415A;
+			color: #FFF;
+			border: none;
+			border-radius: 5px;
+			font-size: 1.2em;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			cursor: pointer;
+			margin-bottom:20px;
+			margin-top:20px;
+		}
+
+		.upload-btn::before {
+			/* Add an arrow (upwards arrow) before the text */
+			content: "\2191";
+			margin-right: 5px;
+		}
+
+
+        .generate-btn {
+            padding: 10px 20px;
+            background-color: #FC415A;
+            color: #FFF;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+			margin-top:20px;
+			margin-bottom:20px;
+        }
+
+        .output-image-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .output-image {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('homepage') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('examples') }}">Examples</a></li>
+            <li><a href="{{ url_for('demo') }}">Demo</a></li>
+            <li><a href="/contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- About Content -->
+    <div class="about-content">
+        <h1>Model Creation</h1>
+        <!-- Form and Button Section -->
+        <div class="form-container">
+			<!-- New: Desired Photo Text -->
+			<div class="input-label"></div>
+			<!-- Image Upload Button -->
+			<label for="input-image" class="upload-btn">Upload Image
+				<input type="file" id="input-image" accept="image/*" class="input-file">
+			</label>
+
+			<div class="input-label">Desired Prompt</div>
+			<input type="text" class="input-field" id="desired-prompt" placeholder="Enter your desired prompt...">
+
+			<div class="input-label">Segment Prompt</div>
+			<input type="text" class="input-field" id="segment-prompt" placeholder="Enter your segment prompt...">
+
+			<button class="generate-btn" onclick="generateImage()">Generate</button>
+		</div>
+
+        <!-- Output Image Area -->
+        <div class="output-image-container" id="output-container">
+            <!-- Image will be displayed here after generation -->
+        </div>
+    </div>
+
+    <!-- JavaScript to handle image generation -->
+    <script>
+        function generateImage() {
+        const desiredPrompt = document.getElementById("desired-prompt").value;
+        const segmentPrompt = document.getElementById("segment-prompt").value;
+
+        // Get the selected image file
+        const inputImage = document.getElementById("input-image").files[0];
+        const formData = new FormData();
+        formData.append("desiredPrompt", desiredPrompt);
+        formData.append("segmentPrompt", segmentPrompt);
+        formData.append("inputImage", inputImage);
+
+        // Make an AJAX request to the Flask API endpoint with the FormData
+        fetch("/generate-image", {
+            method: "POST",
+            body: formData,
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                // Display the generated image
+                const outputContainer = document.getElementById("output-container");
+                outputContainer.innerHTML = `<img class="output-image" src="${data.image_url}" alt="Generated Image">`;
+
+                // Create a download button and link for the generated image
+                const downloadBtn = document.createElement("a");
+                downloadBtn.href = data.image_url;
+                downloadBtn.download = "generated_image.jpg"; // Replace with the desired filename for the downloaded image
+                downloadBtn.textContent = "Download Image";
+                downloadBtn.classList.add("download-btn");
+
+                outputContainer.appendChild(downloadBtn);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }
+    </script>
+</body>
+</html>
