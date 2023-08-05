@@ -99,7 +99,7 @@ img2img_strength_second_pass = list of desirable values
     -->
 
     
-<img src="https://github.com/KryptixOne/ECommerce_Model/blob/DreamBooth_inpaint_Etc_Integration/OutputPics_Issues/GirlWearingLion.PNG" alt="Original Photo" width="30%"> <img src="https://github.com/KryptixOne/ECommerce_Model/blob/DreamBooth_inpaint_Etc_Integration/OutputPics_Issues/outputnew.png" alt="Inpainted Photo" width="30%">
+<img src="https://github.com/KryptixOne/ECommerce_Model/blob/main/OutputPics_Issues/GirlWearingLion.PNG" alt="Original Photo" width="30%"> <img src="https://github.com/KryptixOne/ECommerce_Model/blob/main/OutputPics_Issues/outputnew.png" alt="Inpainted Photo" width="30%">
 
 See left: Original Image, Right: Inpainted Image. Notice the alterations occurs during inpainting
 
@@ -114,7 +114,7 @@ Note we also choose a merge multiplier of 1.
 
 See results below
 
-<img src="https://github.com/KryptixOne/ECommerce_Model/blob/DreamBooth_inpaint_Etc_Integration/OutputPics_Issues/ErroneousMale%20Model.png" alt="Original_superimposed Photo" width="30%"> <img src="https://github.com/KryptixOne/ECommerce_Model/blob/DreamBooth_inpaint_Etc_Integration/OutputPics_Issues/With_New_inpaintModel.png" alt="Inpainted_model Photo" width="30%">
+<img src="https://github.com/KryptixOne/ECommerce_Model/blob/main/OutputPics_Issues/ErroneousMale%20Model.png" alt="Original_superimposed Photo" width="30%"> <img src="https://github.com/KryptixOne/ECommerce_Model/blob/main/OutputPics_Issues/With_New_inpaintModel.png" alt="Inpainted_model Photo" width="30%">
 
 
 
@@ -152,7 +152,10 @@ See results below
     --> Determine which framework best suits your needs [X]
     --> Build sections using desired framework [ ]
         a. Homepage [X]
-        b. About Us [ ]
-        c. Examples [ ]
+        b. About Us [X]
+        c. Examples [X]
         d. Demo [ ]
+           --> Design layout [X]
+           --> Create UI [X]
+           --> Build Functionality with ML Model [X]
         e. Contact [ ]
