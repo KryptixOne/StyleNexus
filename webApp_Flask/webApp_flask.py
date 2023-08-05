@@ -5,19 +5,6 @@ app = Flask(__name__)
 
 # Configuring static file route
 app.static_folder = 'static'
-@app.route('/')
-def homepage():
-    return render_template('index.html')
-@app.route('/about')
-def about():
-    return render_template('about.html')
-
-@app.route('/examples')
-def examples():
-    return render_template('examples.html')
-@app.route('/demo')
-def examples():
-    return render_template('demo.html')
 
 def generate_image(desired_prompt, segment_prompt, input_image):
     # Convert the input image to RGB format
@@ -42,6 +29,21 @@ def generate_image_api():
     return jsonify({"image_url": image_url})
 
 
+
+@app.route('/')
+def homepage():
+    return render_template('index.html')
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/examples')
+def examples():
+    return render_template('examples.html')
+
+@app.route('/demo')
+def demo():
+    return render_template('demo.html')
 
 
 if __name__ == '__main__':
