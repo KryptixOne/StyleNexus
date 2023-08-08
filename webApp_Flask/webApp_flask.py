@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, jsonify
 from PIL import Image
 from modules.api_calls import inpainting_api
-import cv2
+import base64
+from io import BytesIO
 from matplotlib import pyplot as plt
 app = Flask(__name__)
 
@@ -50,7 +51,7 @@ def generate_image(desired_prompt, segment_prompt, input_image):
                                    seeds=None,
                                    height=image_height, width=image_width,
                                    cfg_val=6,
-                                   num_inference_steps=50,
+                                   num_inference_steps=20,
                                    reference_image_path=input_image,
                                    checkpoint_directory_SD=checkpoint_directory_SD,
                                    checkpoint_path_SAM=checkpoint_path_SAM,
@@ -73,8 +74,14 @@ def generate_image_api():
     if desired_prompt is None or segment_prompt is None or input_image is None:
         return jsonify({"error": "Missing required parameters"}), 400
 
-    image_url = generate_image(desired_prompt, segment_prompt, input_image)
-    return jsonify({"image_url": image_url})
+    generated_image = generate_image(desired_prompt, segment_prompt, input_image)
+
+    buffered = BytesIO()
+    generated_image.save(buffered, format="JPEG")
+    encoded_image = base64.b64encode(buffered.getvalue()).decode("utf-8")
+
+    # Return the JSON response with the base64-encoded image
+    return jsonify({"image_data": encoded_image})
 
 
 @app.route('/')
