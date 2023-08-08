@@ -162,6 +162,26 @@
 			margin-top: 20px;
 			margin-bottom: 20px;
 		}
+		
+		.download-container {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-top: 20px;
+		}
+
+		.download-btn {
+			padding: 10px 20px;
+			background-color: #FC415A;
+			color: #FFF;
+			border: none;
+			border-radius: 5px;
+			font-size: 1.2em;
+			text-decoration: none;
+			cursor: pointer;
+			margin-top: 20px;
+		}
+		
 
 		.output-image-container {
 			display: flex;
@@ -174,23 +194,32 @@
 			border-radius: 5px;
 		}
 
+		/* Update container styles to prevent merging and overlapping */
 		.side-by-side-container {
-			display: flex;
-			justify-content: space-between;
-			align-items: flex-start;
-			margin-top: 20px;
-			width: 100%; /* Ensures that the side-by-side container spans the entire width */
+			flex-direction: column; /* Stack containers vertically on small screens */
+			align-items: center; /* Center horizontally */
 		}
 
 		.uploaded-image-container,
 		.output-image-container {
-			flex: 1; /* Distributes available space evenly between the two containers */
-			margin-right: 20px; /* Adds a gap between the containers */
+			flex: none; /* Don't grow or shrink the containers */
+			width: 100%; /* Full width on all screen sizes */
+			max-width: 100%;
+			max-height: none; /* Allow containers to grow as needed */
 		}
 
-		.uploaded-image {
+		/* Set maximum size for images */
+		.uploaded-image,
+		.output-image {
 			max-width: 100%;
-			border-radius: 5px;
+			max-height: 100%; /* Allow images to take full container height */
+		}
+
+		/* Use media queries for responsive design */
+		@media screen and (min-width: 768px) {
+			.side-by-side-container {
+				flex-direction: row; /* Restore side-by-side layout on larger screens */
+			}
 		}
 
 		.processing-indicator {
@@ -201,8 +230,8 @@
 		}
 
 		.processing-icon {
-			width: 32px;
-			height: 32px;
+			width: 64px;
+			height: 64px;
 		}
 
 
@@ -237,6 +266,7 @@
 				</div>
 			</div>
 
+
 			<!-- Image Upload Button -->
 			<label for="input-image" class="upload-btn">Upload Image
 				<input type="file" id="input-image" accept="image/*" class="input-file">
@@ -253,6 +283,9 @@
 			<div class="processing-indicator" id="processing-indicator">
 				<img src="{{ url_for('static', filename='loadingGif.gif') }}" alt="Processing..." class="processing-icon">
 			</div>
+			
+			<div id="download-container" class="download-container"></div>
+
 		</div>
 	</div>
 
@@ -275,7 +308,6 @@
 		// Attach the event listener to the input file element
 		document.getElementById("input-image").addEventListener("change", handleImageUpload);
 
-// Function to generate image
 		// Function to generate image
 		function generateImage() {
 			const desiredPrompt = document.getElementById("desired-prompt").value;
@@ -283,6 +315,10 @@
 			const inputImage = document.getElementById("input-image").files[0];
 			const generateBtn = document.querySelector(".generate-btn");
 			const processingIndicator = document.getElementById("processing-indicator");
+			const downloadContainer = document.getElementById("download-container"); // New download container
+
+			// Hide the download button
+			downloadContainer.innerHTML = "";
 
 			// Disable the generate button
 			generateBtn.disabled = true;
@@ -309,10 +345,13 @@
 				outputImage.className = "output-image";
 				outputImage.src = "data:image/jpeg;base64," + encodedImage;
 
-				// Replace the existing content in the output-container with the new image
+				// Append the generated image to the output container
 				const outputContainer = document.getElementById("output-container");
 				outputContainer.innerHTML = ""; // Clear previous content
 				outputContainer.appendChild(outputImage);
+
+				// Hide the processing indicator
+				processingIndicator.style.display = "none";
 
 				// Create a download button and link for the generated image
 				const downloadBtn = document.createElement("a");
@@ -321,14 +360,9 @@
 				downloadBtn.textContent = "Download Image";
 				downloadBtn.classList.add("download-btn");
 
-				outputContainer.appendChild(downloadBtn);
-
-				// Reset the uploaded image
-				const uploadedImage = document.getElementById("uploaded-image");
-				uploadedImage.src = ""; // Clear the uploaded image
-
-				// Hide the processing indicator
-				processingIndicator.style.display = "none";
+				// Clear previous content and append the download button to the download container
+				downloadContainer.innerHTML = "";
+				downloadContainer.appendChild(downloadBtn);
 
 				// Enable the generate button
 				generateBtn.disabled = false;
@@ -341,6 +375,9 @@
 				generateBtn.disabled = false;
 			});
 		}
+
+
+
 
     </script>
 </body>
