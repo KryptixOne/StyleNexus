@@ -51,7 +51,7 @@ def generate_image(desired_prompt, segment_prompt, input_image):
                                    seeds=None,
                                    height=image_height, width=image_width,
                                    cfg_val=6,
-                                   num_inference_steps=20,
+                                   num_inference_steps=5,
                                    reference_image_path=input_image,
                                    checkpoint_directory_SD=checkpoint_directory_SD,
                                    checkpoint_path_SAM=checkpoint_path_SAM,
