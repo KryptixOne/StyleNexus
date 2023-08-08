@@ -3,6 +3,7 @@ from PIL import Image
 import warnings
 from utils.create_embeddings import build_text_embeddings
 import numpy as np
+from werkzeug.datastructures import FileStorage
 from matplotlib import pyplot as plt
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
@@ -38,6 +39,7 @@ def resize_image(image_path, new_width, new_height):
         PIL.Image.Image
             The resized image.
     """
+
     # If the input is a file path
     if isinstance(image_path, str):
         image = Image.open(image_path)
@@ -49,6 +51,9 @@ def resize_image(image_path, new_width, new_height):
     # If the input is already a PIL image
     elif isinstance(image_path, Image.Image):
         image = image_path
+
+    elif isinstance(image_path, FileStorage):
+        image = Image.open(image_path.stream)
 
     else:
         raise ValueError("Invalid input type. The 'image_path' should be a str, numpy.ndarray, or PIL.Image.Image.")

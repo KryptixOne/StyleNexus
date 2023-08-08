@@ -6,7 +6,7 @@ from utils.create_masks_from_prompts import create_border_mask, build_SAM, build
     create_all_mask_sam, clip_scoring, close_mask_holes
 from PIL import Image
 import cv2
-
+import numpy as np
 
 def inpainting_api(prompt: str,
                    negative_prompt: str,
@@ -58,8 +58,10 @@ def inpainting_api(prompt: str,
         pipeline = load_lora_weights_safetensor_to_diffusers(pipeline, lora_path, alpha=lora_alpha)
 
     # Build mask here
-    img = cv2.imread(reference_image_path)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    #img = cv2.imread(reference_image_path) # for some reason SAM has issues with non-CV2 images
+    pil_image = Image.open(reference_image_path)
+    opencvImage = cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
+    img = cv2.cvtColor(opencvImage, cv2.COLOR_BGR2RGB)
     orig_image_pil = Image.fromarray(img)
     sam = build_SAM(checkpoint_path=checkpoint_path_SAM, device='cuda')
     masks = create_all_mask_sam(img, sam=sam)
