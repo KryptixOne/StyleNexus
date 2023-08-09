@@ -15,8 +15,9 @@ def generate_image(desired_prompt, segment_prompt, input_image):
     checkpoint_path_SAM = r'./SAM_Checkpoint/sam_vit_h_4b8939.pth'
     lora_path = None
     border_mask_width = 8  # make it based off of image size
-    negative_prompt = ('(worst quality, low quality, normal quality:2), bad quality, bad hands, ugly, NSFW'
+    negative_prompt = ('(worst quality, low quality, normal quality:2), long neck bad quality, bad hands, ugly, NSFW'
                        )
+    desired_prompt = 'sexy, attractive, beautiful, '+desired_prompt
     # get init dimensions
     image = Image.open(input_image)
 
@@ -51,7 +52,7 @@ def generate_image(desired_prompt, segment_prompt, input_image):
                                    seeds=None,
                                    height=image_height, width=image_width,
                                    cfg_val=6,
-                                   num_inference_steps=5,
+                                   num_inference_steps=50,
                                    reference_image_path=input_image,
                                    checkpoint_directory_SD=checkpoint_directory_SD,
                                    checkpoint_path_SAM=checkpoint_path_SAM,

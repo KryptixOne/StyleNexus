@@ -123,6 +123,7 @@ See results below
 
     --> Create masks with segmentation net. [X]
         a. "Segment Anything" Paper: https://arxiv.org/pdf/2304.02643.pdf
+        --> Look into fast Segment anything. This has a free commercial use license [ ]
     --> Define Inpainting area [X]
     --> Define Border of Inpainting area for Second pass to smooth border artifacts [X]
         * Not required if Segmentation Mask is of high Quality
@@ -155,7 +156,9 @@ See results below
         b. About Us [X]
         c. Examples [X]
         d. Demo [ ]
-           --> Design layout [X]
-           --> Create UI [X]
-           --> Build Functionality with ML Model [X]
+            --> Design layout [X]
+            --> Create UI [X]
+            --> Build Functionality with ML Model [X]
+            --> Incorporate Cloud-Cluster Compatibility [ ]
+            --> Create Demo Video [X]
         e. Contact [ ]
