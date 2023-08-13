@@ -11,8 +11,8 @@ app.static_folder = 'static'
 
 
 def generate_image(desired_prompt, segment_prompt, input_image):
-    checkpoint_directory_SD = r'./Models_Converted/Photon_inpaint'
-    checkpoint_path_SAM = r'./SAM_Checkpoint/sam_vit_h_4b8939.pth'
+    checkpoint_directory_SD = r'./checkpoints/Photon_inpaint'
+    checkpoint_path_SAM = r'./checkpoints/SAM_Checkpoint/sam_vit_h_4b8939.pth'
     lora_path = None
     border_mask_width = 8  # make it based off of image size
     negative_prompt = ('(worst quality, low quality, normal quality:2), long neck bad quality, bad hands, ugly, NSFW'
