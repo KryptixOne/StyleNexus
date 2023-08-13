@@ -1,6 +1,18 @@
 # ECommerce_Model
 
+<details>
+  <summary>Setup</summary>
+  Setup is work in progress. Goal is to use the Dockerfile with the cuda base image. Currently requirements contain torch although base image provides them too.
+  Structure of checkpoints:
 
+  ```
+  checkpoints/
+├── Lora
+├── Photon_inpaint
+└── SAM_Checkpoint
+  ```
+
+</details>
 
 ---
 
