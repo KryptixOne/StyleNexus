@@ -17,7 +17,7 @@ def generate_image(desired_prompt, segment_prompt, input_image):
     border_mask_width = 8  # make it based off of image size
     negative_prompt = ('(worst quality, low quality, normal quality:2), long neck bad quality, bad hands, ugly, NSFW'
                        )
-    desired_prompt = 'sexy, attractive, beautiful, '+desired_prompt
+    #desired_prompt = 'sexy, attractive, beautiful, '+desired_prompt
     # get init dimensions
     image = Image.open(input_image)
 
