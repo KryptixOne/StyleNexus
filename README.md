@@ -47,8 +47,7 @@ img2img_strength_first_pass = [0.9] # 0.9 on first. Heavy alteration should be g
 img2img_strength_second_pass = [0.5] #0.4 -0.5 best visual # lower to reduce effects of superimposition but also to limit border distortion
 HyperParameterTune_num = 1
 ```
-3. checkpoints available: [Google Drive](https://drive.google.com/drive/folders/15aWgJfne3cZ5Im7w3N_-XX3MMmg-gLno?usp=sharing)
-4. run `main.py` after values have been set.
+3. run `main.py` after values have been set.
 ---
 
 ### Hyperparameter Usage:
@@ -64,24 +63,5 @@ img2img_strength_second_pass = list of desirable values
 ### Flask Webapp Usage:
 1. run `python ./webApp_Flask/webApp_flask.py` in terminal
 2. click on the link that apperas in the terminal
-
 ---
-    
-<img src="https://github.com/KryptixOne/ECommerce_Model/blob/main/OutputPics_Issues/GirlWearingLion.PNG" alt="Original Photo" width="30%"> <img src="https://github.com/KryptixOne/ECommerce_Model/blob/main/OutputPics_Issues/outputnew.png" alt="Inpainted Photo" width="30%">
-
-See left: Original Image, Right: Inpainted Image. Notice the alterations occurs during inpainting
-
-#### Update on Issue:
-Problem showing improvements after updating model weights.
-
-Merging Inpainting Model V1.5 with Model not used for in-painting updates successfully according to the following:
-A +(B-C) 
-Where A is Inpaint Model, B is our Model, and C is the non-inpaint version of A
-
-Note we also choose a merge multiplier of 1.
-
-See results below
-
-<img src="https://github.com/KryptixOne/ECommerce_Model/blob/main/OutputPics_Issues/ErroneousMale%20Model.png" alt="Original_superimposed Photo" width="30%"> <img src="https://github.com/KryptixOne/ECommerce_Model/blob/main/OutputPics_Issues/With_New_inpaintModel.png" alt="Inpainted_model Photo" width="30%">
-
-
+  
