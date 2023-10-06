@@ -1,7 +1,7 @@
-# ECommerce_Model
-<div style="text-align: center;">
+# StyleNexus
+
 <img src="https://github.com/KryptixOne/ECommerce_Model/blob/main/webApp_Flask/static/Video_Gif.gif" alt="StylNexus Demo">
-</div>
+
 
 
 
