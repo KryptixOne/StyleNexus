@@ -8,6 +8,7 @@ from utils.create_masks_from_prompts import create_border_mask, build_SAM, build
 from PIL import Image
 import cv2
 import random
+import torch
 
 
 def main():
@@ -20,8 +21,7 @@ def main():
     direct = r'D:/Ecommerce_FakeModel/OutputPics_Issues/Tuning/'
     lora_path = '' #"D:\Ecommerce_FakeModel\Models_Converted\Lora\polyhedron_new_skin_v1.1.safetensors"
     lora_alpha = 1
-    device = "cuda"
-    prompt = " (A sexy model with sunglasses and a water gun), waterfall and river background"
+    prompt = " (A model with sunglasses and a water gun), waterfall and river background"
     negative_prompt = ('cartoon, painting, illustration, (worst quality, low quality, normal quality:2), NSFW'
        )
     segmentation_prompt = 'a photo of water-gun, water gun '
@@ -33,6 +33,13 @@ def main():
     img2img_strength_first_pass = [0.8] # 0.9 on first. Heavy alteration should be given
     img2img_strength_second_pass = [0.5] #0.4 -0.5 best visual # lower to reduce effects of superimposition but also to limit border distortion
     HyperParameterTune_num = 1
+    if torch.cuda.is_available():
+        device = torch.device('cuda')
+    elif torch.backends.mps.is_available():
+        device = torch.device('mps')
+    else:
+        device = torch.device('cpu')
+
     # ******************************
 
     # inpaint img2img

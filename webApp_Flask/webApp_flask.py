@@ -3,6 +3,7 @@ from PIL import Image
 from modules.api_calls import inpainting_api
 import base64
 from io import BytesIO
+import torch
 from matplotlib import pyplot as plt
 app = Flask(__name__)
 
@@ -11,6 +12,12 @@ app.static_folder = 'static'
 
 
 def generate_image(desired_prompt, segment_prompt, input_image):
+    if torch.cuda.is_available():
+        device = torch.device('cuda')
+    elif torch.backends.mps.is_available():
+        device = torch.device('mps')
+    else:
+        device = torch.device('cpu')
     checkpoint_directory_SD = r'./checkpoints/Photon_inpaint'
     checkpoint_path_SAM = r'./checkpoints/SAM_Checkpoint/sam_vit_h_4b8939.pth'
     lora_path = None
@@ -48,7 +55,7 @@ def generate_image(desired_prompt, segment_prompt, input_image):
     generated_img = inpainting_api(prompt=desired_prompt,
                                    negative_prompt=negative_prompt,
                                    segmentation_prompt=segment_prompt,
-                                   device='cuda',
+                                   device=device,
                                    seeds=None,
                                    height=image_height, width=image_width,
                                    cfg_val=6,
