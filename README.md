@@ -1,5 +1,9 @@
 # ECommerce_Model
 
+<img src="https://github.com/KryptixOne/ECommerce_Model/blob/main/webApp_Flask/static/Video_Gif.gif" alt="StylNexus Demo">
+
+
+
 <details>
   <summary>Setup</summary>
   Setup is work in progress. Goal is to use the Dockerfile with the cuda base image. Currently requirements contain torch although base image provides them too.
